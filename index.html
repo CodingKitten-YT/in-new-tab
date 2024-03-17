@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Open in new tab.</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            margin: 0;
+        }
+        .card {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+        }
+        .url-container {
+            margin-top: 20px;
+        }
+        .url-text {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+        .open-button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>You must open this website in a new tab!</h1>
+        <div class="url-container">
+            <p class="url-text" id="urlText"></p>
+            <button class="open-button" id="openButton">Open in New Tab</button>
+        </div>
+    </div>
+
+    <script>
+        // Function to extract URL parameter from the URL
+        function getUrlParameter(name) {
+            name = name.replace(/[[]/, '\\[').replace(/[\]]/, '\\]');
+            var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+            var results = regex.exec(location.search);
+            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+        };
+
+        // Function to update URL text and open it in a new tab
+        function updatePreview() {
+            var urlParam = getUrlParameter('url');
+            var urlTextElement = document.getElementById('urlText');
+            if (urlParam) {
+                // Check if the URL starts with http:// or https://
+                if (!urlParam.startsWith('http://') && !urlParam.startsWith('https://')) {
+                    urlParam = 'https://' + urlParam; // Add https:// if not present
+                }
+                urlTextElement.textContent = urlParam;
+                var openButton = document.getElementById('openButton');
+                openButton.addEventListener('click', function() {
+                    window.open(urlParam, '_blank');
+                });
+            } else {
+                urlTextElement.textContent = 'No URL parameter provided.';
+            }
+        }
+
+        // Call the function on page load
+        window.onload = updatePreview;
+    </script>
+</body>
+</html>
